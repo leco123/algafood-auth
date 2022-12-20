@@ -36,11 +36,8 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                     .scopes("write","read")
                     .accessTokenValiditySeconds(60 * 60 * 6)
                 .and()
-                    .withClient("algafood-mobile")
-                    .secret(passwordEncoder.encode("abc555"))
-                    .authorizedGrantTypes("password")
-                    .scopes("write","read")
-                    .accessTokenValiditySeconds(60 * 60 * 6);
+                    .withClient("checktoken")
+                    .secret(passwordEncoder.encode("check123"));
     }
 
     @Override

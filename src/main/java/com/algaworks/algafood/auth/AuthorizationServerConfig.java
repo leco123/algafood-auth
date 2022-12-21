@@ -44,6 +44,15 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
                 // Cliente para aplicação backend usando client_credentials para acessar resource server
                 .and()
+                    .withClient("foodanalytics")
+                    .secret(passwordEncoder.encode("food123"))
+                    .authorizedGrantTypes("authorization_code")
+                    .scopes("write","read")
+                    // http:/auth.algafood.local:8081/oauth/authorize?response_type=code&client_id=foodanalytics&state=NG6541nsdHEj&redirect_uri=http://aplicacao-cliente
+                    .redirectUris("http://aplicacao-cliente")
+
+                // Cliente para aplicação backend usando client_credentials para acessar resource server
+                .and()
                     .withClient("faturamento")
                     .secret(passwordEncoder.encode("faturamento123"))
                     .authorizedGrantTypes("client_credentials")

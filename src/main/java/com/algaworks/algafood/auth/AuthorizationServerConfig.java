@@ -38,7 +38,9 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                     .authorizedGrantTypes("password","refresh_token")
                     // Tipos de escopo
                     .scopes("write","read")
-                    .accessTokenValiditySeconds(60 * 60 * 6)
+                    //.accessTokenValiditySeconds(60 * 60 * 6)
+                    .accessTokenValiditySeconds(60 * 60 * 6) // 6 horas
+                    .refreshTokenValiditySeconds(60 * 24 * 60 * 60) // 60 dias
                 .and()
                     .withClient("checktoken")
                     .secret(passwordEncoder.encode("check123"));
@@ -59,6 +61,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     public void configure (AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
         endpoints
                 .authenticationManager(authenticationManager)
-                .userDetailsService(userDetailsService);
+                .userDetailsService(userDetailsService)
+                .reuseRefreshTokens(false);
     }
 }

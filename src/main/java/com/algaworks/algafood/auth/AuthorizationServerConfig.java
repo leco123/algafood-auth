@@ -52,7 +52,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                     .secret(passwordEncoder.encode("food123"))
                     .authorizedGrantTypes("authorization_code")
                     .scopes("write","read")
-                    // http:/auth.algafood.local:8081/oauth/authorize?response_type=code&client_id=foodanalytics&state=NG6541nsdHEj&redirect_uri= http://www.foodanalytics.local:8082
+                    // http:/auth.algafood.local:8081/oauth/authorize?response_type=code&client_id=foodanalytics&state=NG6541nsdHEj&redirect_uri= http://www.foodanalytics.local:8082&code_challenge=teste123&code_challenge_method=s256
                     .redirectUris("http://www.foodanalytics.local:8082")
 
                 .and()

@@ -10,6 +10,10 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.A
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
+import org.springframework.security.oauth2.provider.CompositeTokenGranter;
+import org.springframework.security.oauth2.provider.TokenGranter;
+
+import java.util.Arrays;
 
 @Configuration
 @EnableAuthorizationServer
@@ -50,11 +54,12 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                     .scopes("write","read")
                     // http:/auth.algafood.local:8081/oauth/authorize?response_type=code&client_id=foodanalytics&state=NG6541nsdHEj&redirect_uri= http://www.foodanalytics.local:8082
                     .redirectUris("http://www.foodanalytics.local:8082")
+
                 .and()
                     .withClient("webadmin")
                     .authorizedGrantTypes("implicit")
                     .scopes("write","read")
-                    // http:/auth.algafood.local:8081/oauth/authorize?response_type=token&client_id=webadmin&state=abc&redirect_uri= http://aplicacao-cliente
+                // http:/auth.algafood.local:8081/oauth/authorize?response_type=token&client_id=foodanalytics&state=NG6541nsdHEj&redirect_uri= http://aplicacao-cliente
                     .redirectUris("http://aplicacao-cliente")
 
                 // Cliente para aplicação backend usando client_credentials para acessar resource server
@@ -86,6 +91,18 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         endpoints
                 .authenticationManager(authenticationManager)
                 .userDetailsService(userDetailsService)
-                .reuseRefreshTokens(false);
+                .reuseRefreshTokens(false)
+				.tokenGranter(tokenGranter(endpoints));
     }
+
+	private TokenGranter tokenGranter(AuthorizationServerEndpointsConfigurer endpoints) {
+		var pkceAuthorizationCodeTokenGranter = new PkceAuthorizationCodeTokenGranter(endpoints.getTokenServices(),
+				endpoints.getAuthorizationCodeServices(), endpoints.getClientDetailsService(),
+				endpoints.getOAuth2RequestFactory());
+
+		var granters = Arrays.asList(
+				pkceAuthorizationCodeTokenGranter, endpoints.getTokenGranter());
+
+		return new CompositeTokenGranter(granters);
+	}
 }

@@ -41,6 +41,15 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                     //.accessTokenValiditySeconds(60 * 60 * 6)
                     .accessTokenValiditySeconds(60 * 60 * 6) // 6 horas
                     .refreshTokenValiditySeconds(60 * 24 * 60 * 60) // 60 dias
+
+                // Cliente para aplicação backend usando client_credentials para acessar resource server
+                .and()
+                    .withClient("faturamento")
+                    .secret(passwordEncoder.encode("faturamento123"))
+                    .authorizedGrantTypes("client_credentials")
+                    .scopes("write","read")
+
+                // usado apenas para o Resource Server, fazer chamada da URI de introspeção
                 .and()
                     .withClient("checktoken")
                     .secret(passwordEncoder.encode("check123"));

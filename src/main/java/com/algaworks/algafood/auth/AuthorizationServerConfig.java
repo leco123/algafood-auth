@@ -50,6 +50,12 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                     .scopes("write","read")
                     // http:/auth.algafood.local:8081/oauth/authorize?response_type=code&client_id=foodanalytics&state=NG6541nsdHEj&redirect_uri= http://www.foodanalytics.local:8082
                     .redirectUris("http://www.foodanalytics.local:8082")
+                .and()
+                    .withClient("webadmin")
+                    .authorizedGrantTypes("implicit")
+                    .scopes("write","read")
+                    // http:/auth.algafood.local:8081/oauth/authorize?response_type=token&client_id=webadmin&state=abc&redirect_uri= http://aplicacao-cliente
+                    .redirectUris("http://aplicacao-cliente")
 
                 // Cliente para aplicação backend usando client_credentials para acessar resource server
                 .and()

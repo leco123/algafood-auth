@@ -90,7 +90,10 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         // define que para acessar ou checkar precisa estar autorizado
 //        security.checkTokenAccess("isAuthenticated()");
         // Não precisa de autenticação para gerar token
-        security.checkTokenAccess("permitAll()");
+        security.checkTokenAccess("permitAll()")
+                // permitir todos os acessos no endpoint tokenkey
+                .tokenKeyAccess("permitAll()")
+                .allowFormAuthenticationForClients();
     }
 
     /**

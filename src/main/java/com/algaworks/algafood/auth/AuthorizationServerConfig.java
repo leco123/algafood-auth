@@ -1,8 +1,8 @@
 package com.algaworks.algafood.auth;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -13,8 +13,7 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.CompositeTokenGranter;
 import org.springframework.security.oauth2.provider.TokenGranter;
-import org.springframework.security.oauth2.provider.token.TokenStore;
-import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
+import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 
 import java.util.Arrays;
 
@@ -31,8 +30,8 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Autowired
     private AuthenticationManager authenticationManager;
 
-    @Autowired
-    private RedisConnectionFactory redisConnectionFactory;
+//    @Autowired
+//    private RedisConnectionFactory redisConnectionFactory;
 
     /**
      * Define que determinado usuário usando password *** pode usar o fluxo: password
@@ -98,12 +97,23 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                 .authenticationManager(authenticationManager)
                 .userDetailsService(userDetailsService)
                 .reuseRefreshTokens(false)
-                .tokenStore(redisTokenStore())
+//                .tokenStore(redisTokenStore()) usado com redis
+                .accessTokenConverter(jwtAccessTokenConverter())
 				.tokenGranter(tokenGranter(endpoints));
     }
 
-    private TokenStore redisTokenStore() {
-        return new RedisTokenStore(redisConnectionFactory);
+//    private TokenStore redisTokenStore() {
+//        return new RedisTokenStore(redisConnectionFactory);
+//    }
+
+    @Bean
+    public JwtAccessTokenConverter jwtAccessTokenConverter() {
+        // Usando algoritimo HMAC
+        JwtAccessTokenConverter jwtAccessTokenConverter = new JwtAccessTokenConverter();
+        // definindo chave secreta, também conhecida como MAC
+        jwtAccessTokenConverter.setSigningKey("algaworks");
+
+        return jwtAccessTokenConverter;
     }
 
 	private TokenGranter tokenGranter(AuthorizationServerEndpointsConfigurer endpoints) {

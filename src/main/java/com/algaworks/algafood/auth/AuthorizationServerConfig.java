@@ -110,8 +110,8 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     public JwtAccessTokenConverter jwtAccessTokenConverter() {
         // Usando algoritimo HMAC
         JwtAccessTokenConverter jwtAccessTokenConverter = new JwtAccessTokenConverter();
-        // definindo chave secreta, também conhecida como MAC
-        jwtAccessTokenConverter.setSigningKey("algaworkssdfsdf878451548748454f5asdf");
+        // definindo chave secreta, também conhecida como HmacSHA256
+        jwtAccessTokenConverter.setSigningKey("algaworkssdfsdf878451548748454f5asdfasdas");
 
         return jwtAccessTokenConverter;
     }

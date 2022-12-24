@@ -33,7 +33,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     private AuthenticationManager authenticationManager;
 
     @Autowired
-    private JwtkeyStoreProperties jwtkeyStoreProperties;
+    private JwtKeyStoreProperties jwtKeyStoreProperties;
 
 //    @Autowired
 //    private RedisConnectionFactory redisConnectionFactory;
@@ -117,16 +117,16 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Bean
     public JwtAccessTokenConverter jwtAccessTokenConverter() {
         // Usando algoritimo HMAC
-        JwtAccessTokenConverter jwtAccessTokenConverter = new JwtAccessTokenConverter();
+        var jwtAccessTokenConverter = new JwtAccessTokenConverter();
         // definindo chave secreta, também conhecida como HmacSHA256
         //jwtAccessTokenConverter.setSigningKey("algaworkssdfsdf878451548748454f5asdfasdas");
 
-        var jksResource = new ClassPathResource(jwtkeyStoreProperties.getPath());
-        var keyStorePass = jwtkeyStoreProperties.getPassword(); // senha para abrir o arquivo jks "algafood.jks"
-        var keyPairAlias = jwtkeyStoreProperties.getKeypairAlias();
+        var jksResource = new ClassPathResource(jwtKeyStoreProperties.getPath());
+        var keyStorePass = jwtKeyStoreProperties.getPassword();
+        var keyPairAlias = jwtKeyStoreProperties.getKeypairAlias();
         // abrir arquivo jks
-        var keyStorekeyFactory = new KeyStoreKeyFactory(jksResource, keyStorePass.toCharArray());
-        var keyPair = keyStorekeyFactory.getKeyPair(keyPairAlias);
+        var keyStoreKeyFactory = new KeyStoreKeyFactory(jksResource, keyStorePass.toCharArray());
+        var keyPair = keyStoreKeyFactory.getKeyPair(keyPairAlias);
 
         jwtAccessTokenConverter.setKeyPair(keyPair);
 

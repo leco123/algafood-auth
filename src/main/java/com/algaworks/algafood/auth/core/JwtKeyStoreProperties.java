@@ -5,41 +5,43 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotBlank;
+
 @Validated
 @Component
 @ConfigurationProperties("algafood.jwt.keystore")
 public class JwtKeyStoreProperties {
 
-    @NotBlank
-    private String path;
+	@NotBlank
+	private String path;
+	
+	@NotBlank
+	private String password;
+	
+	@NotBlank
+	private String keypairAlias;
 
-    @NotBlank
-    private String password;
+	public String getPassword() {
+		return password;
+	}
 
-    @NotBlank
-    private String keypairAlias;
+	public void setPassword(String password) {
+		this.password = password;
+	}
 
-    public String getPassword() {
-        return password;
-    }
+	public String getKeypairAlias() {
+		return keypairAlias;
+	}
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+	public void setKeypairAlias(String keypairAlias) {
+		this.keypairAlias = keypairAlias;
+	}
 
-    public String getKeypairAlias() {
-        return keypairAlias;
-    }
+	public String getPath() {
+		return path;
+	}
 
-    public void setKeypairAlias(String keypairAlias) {
-        this.keypairAlias = keypairAlias;
-    }
+	public void setPath(String path) {
+		this.path = path;
+	}
 
-    public String getPath() {
-        return path;
-    }
-
-    public void setPath(String path) {
-        this.path = path;
-    }
 }

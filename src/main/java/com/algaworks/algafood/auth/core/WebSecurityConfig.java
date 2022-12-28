@@ -12,16 +12,15 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        // método de criptografia, para incriptografar as senhas
-        return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    @Override
-    protected AuthenticationManager authenticationManager () throws Exception {
-        return super.authenticationManager();
-    }
-
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
+	
+	@Bean
+	@Override
+	protected AuthenticationManager authenticationManager() throws Exception {
+		return super.authenticationManager();
+	}
+	
 }
